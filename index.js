@@ -1,14 +1,20 @@
 const express = require('express')
 const app = express();
 
+let users = []
+
 // to make sure you send html files with external css files
 app.use(express.static(__dirname));
 // to make sure you can read psot body.
 app.use(express.json());
-app.use(express.urlencoded());
+app.use(express.urlencoded({extended:false}));
 
 app.get('/', (req,res) => {
     res.sendFile(__dirname+'/index.html')
+})
+
+app.get('/users', (req,res) => {
+    res.send(users);
 })
 
 app.get('/signup', (req,res) => {
@@ -20,15 +26,20 @@ app.get('/signin', (req,res) => {
 })
 
 app.post('/signup', (req,res) => {
+    users.push(req.body);
     res.write("signed up with folowing details \n");
     res.write(JSON.stringify(req.body));
     res.end();
 })
 
 app.post('/signin', (req,res) => {
+    const userExists = users.find(el=> el.email == req.body.uname && el.psw == req.body.psw);
+    if(!userExists){
+        return res.status(401).send("Username or password is wrong \n");
+    }
     res.write("signed in with folowing details \n");
-    res.write(JSON.stringify(req.body));
-    res.end();
+    res.write(JSON.stringify(userExists));
+    res.status(200).end();
 })
 
 app.listen(8000, ()=>{
