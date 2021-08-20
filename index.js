@@ -1,6 +1,6 @@
 const express = require('express')
 const app = express();
-
+const jwt = require('jsonwebtoken');
 let users = []
 
 // to make sure you send html files with external css files
@@ -26,6 +26,8 @@ app.get('/signin', (req,res) => {
 })
 
 app.post('/signup', (req,res) => {
+    req.body.psw = jwt.sign(req.body.psw , 'secret');
+    delete req.body["psw-repeat"];
     users.push(req.body);
     res.write("signed up with folowing details \n");
     res.write(JSON.stringify(req.body));
@@ -33,6 +35,7 @@ app.post('/signup', (req,res) => {
 })
 
 app.post('/signin', (req,res) => {
+    req.body.psw = jwt.sign(req.body.psw , 'secret');
     const userExists = users.find(el=> el.email == req.body.uname && el.psw == req.body.psw);
     if(!userExists){
         return res.status(401).send("Username or password is wrong \n");
