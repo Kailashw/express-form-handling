@@ -1,8 +1,8 @@
 # express-form-handling
 
-This project will demonstarte usage of `express` and `jwt` libraries to build simple login and signup flow. 
+This project will demonstarte usage of `express` , `ejs` template engine and `jwt` libraries to build simple login/signup flow and display list of registered users.
 
-The code exhibits ca[abilities such as handling form request from HTML pages and responding back.
+The code exhibits capabilities such as handling form request from ejs templates and responding back.
 
 To get started checkout the code in your machine and run following commands.
 
